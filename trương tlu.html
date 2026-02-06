@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.banner-top-wrapper {
+        width: 100%;
+        /* Giảm chiều cao xuống còn 80% so với nguyên bản hoặc dùng đơn vị vh */
+        height: 400px; 
+        overflow: hidden;
+        display: flex;
+        align-items: center; /* Căn giữa ảnh nếu ảnh to hơn khung */
+    }
+
+    .banner-top-img {
+        width: 100%;
+        height: 100%;
+        /* CỰC KỲ QUAN TRỌNG: Giúp ảnh khớp khít box mà không bị méo */
+        object-fit: cover; 
+        object-position: center;
+    }
+.lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Khoảng cách giữa ảnh và chữ VN */
+    cursor: pointer;
+}
+
+.lang-flag {
+    /* CHỈNH KÍCH THƯỚC TẠI ĐÂY */
+    width: 24px;   /* Bạn có thể đổi thành 20px, 30px tùy ý */
+    height: 24px;  /* Nên để bằng width nếu là ảnh vuông */
+    
+    /* Giúp ảnh không bị méo khi chỉnh kích thước */
+    object-fit: cover; 
+    border-radius: 50%; /* Nếu bạn muốn icon hình tròn, nếu không hãy xóa dòng này */
+    display: block;
+}
+
+.lang-switch span {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+/* Reset cơ bản cho sạch sẽ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Be Vietnam Pro', sans-serif; /* Font này mới hiện đại nhé! */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Tầng 1: Trắng tinh khôi nhưng chuyên nghiệp */
+.header-top {
+    padding: 15px 0;
+    background-color: #ffffff;
+}
+
+.main-logo {
+    height: 70px; /* Chỉnh cho Logo nổi bật */
+}
+
+.top-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.search-wrapper input {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+/* Tầng 2: Màu xanh quyền lực của TLU */
+.main-navigation {
+    background-color: #004080; /* Màu xanh đậm đặc trưng */
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    width: 100%;
+}
+
+.nav-menu li {
+    flex: 1; /* Chia đều không gian cho các mục */
+    text-align: center;
+}
+
+.nav-menu li a {
+    display: block;
+    padding: 15px 0;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hiệu ứng khi di chuột vào - Nổi loạn một chút nào! */
+.nav-menu li a:hover {
+    background-color: #0056b3;
+    color: #ffcf00; /* Màu vàng điểm xuyết cho rực rỡ */
+}
+
+.nav-menu li:last-child a {
+    border-right: none;
+}
+
+/* Thiết lập vị trí cho mục cha */
+.has-dropdown {
+    position: relative; /* Để menu con bám theo mục cha */
+}
+
+/* Ẩn menu con đi khi bình thường */
+.dropdown-content {
+    display: none; 
+    position: absolute;
+    top: 100%; /* Hiện ngay bên dưới thanh menu */
+    left: 0;
+    background-color: #004080; /* Màu xanh Thủy lợi cho đồng bộ */
+    min-width: 200px;
+    list-style: none;
+    z-index: 1000;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2); /* Đổ bóng cho sang chảnh */
+}
+
+/* Kiểu dáng cho các liên kết trong menu con */
+.dropdown-content li a {
+    padding: 12px 16px;
+    text-align: left;
+    border-right: none; /* Bỏ gạch đứng ở menu con */
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* HIỆU ỨNG QUAN TRỌNG: Di chuột vào mục cha thì hiện mục con */
+.has-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.hero-slider {
+    width: 100%;
+    max-width: 1000px; /* Khóa đúng kích thước bạn muốn */
+    margin: 20px auto; /* Căn giữa và cách Menu một chút */
+    overflow: hidden;
+    border-radius: 8px; /* Bo góc cho sang */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.slider-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Hít vào từng slide */
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Ẩn thanh cuộn xấu xí đi */
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none; /* Ẩn thanh cuộn trên Chrome/Safari */
+}
+
+.slide {
+    flex: 0 0 100%; /* Mỗi slide chiếm đúng 100% chiều rộng container */
+    width: 1000px;
+    height: 300px;
+    scroll-snap-align: start;
+}
+
+.slide img, .slide-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Để ảnh/video không bị méo khi dãn */
+    display: block;
+}
+
+/* Container và Grid chính */
+.main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Tỉ lệ 2:1 đúng yêu cầu */
+    gap: 30px;
+    padding: 40px 0;
+    background-color: #ffffff; /* Nền xám nhạt */
+}
+
+.section-title {
+    color: #003399; /* Xanh dương đậm TLU */
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Style cho các Card - Áp dụng đổ bóng và bo góc */
+.card-big, .card-small, .notice-item {
+    background: #fff;
+    border-radius: 8px; /* Bo góc nhẹ */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Đổ bóng nhẹ sang chảnh */
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.card-big:hover, .notice-item:hover {
+    transform: translateY(-5px); /* Hiệu ứng hover nổi loạn tí */
+}
+
+/* Cột Tin tức */
+.news-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+}
+
+.card-big img { width: 100%; height: 300px; object-fit: cover; }
+.card-body { padding: 15px; }
+.card-body h3 { color: #003399; font-size: 18px; margin-bottom: 10px; }
+
+.date { color: #888; font-size: 12px; margin-bottom: 8px; }
+
+/* Cột Thông báo */
+.notice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notice-item { padding: 15px; border-left: 4px solid #003399; /* Nhấn nhá cho chuyên nghiệp */ }
+.notice-item a { text-decoration: none; color: #333; font-weight: 500; font-size: 14px; }
+
+.card-small {
+        width: 300px; /* Độ rộng của toàn bộ thẻ card */
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .card-small img {
+        /* Thay đổi thông số ở đây để chỉnh kích thước ảnh */
+        width: 100%;  /* Ảnh rộng bằng 100% khung chứa card */
+        height: auto; /* Giữ đúng tỷ lệ ảnh, không bị méo */
+        border-radius: 4px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .card-small h4 {
+        font-size: 16px;
+        margin: 5px 0;
+        color: #003399;
+    }
+
+    .date {
+        color: #888;
+        font-size: 12px;
+    }
+
+
+/* Style cho phần Sự kiện */
+.events-section {
+    padding: 40px 0;
+    background-color: #fff;
+}
+
+.no-events {
+    text-align: left; /* Căn trái theo yêu cầu của bạn */
+    color: #555;
+    font-style: italic;
+    margin-top: 20px;
+    padding-left: 10%; /* Tạo khoảng trống bên phải như trong ảnh */
+}
+
+/* Style cho phần Những con số ấn tượng */
+.stats-section {
+    padding: 60px 0;
+    background-color: #fff;
+    text-align: center;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around; /* Rải đều các con số */
+    align-items: flex-start;
+    flex-wrap: wrap; /* Tự nhảy dòng nếu màn hình nhỏ */
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 150px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 36px;
+    font-weight: 800;
+    color: #003399; /* Màu xanh dương đặc trưng TLU */
+    margin-bottom: 10px;
+}
+
+.stat-number sup {
+    font-size: 20px;
+    top: -0.5em;
+}
+
+.stat-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+}
+
+.events-section {
+    padding-top: 50px;    /* Khoảng cách phía trên */
+    padding-bottom: 50px; /* Khoảng cách phía dưới */
+    background: #ffffff;
+}
+
+.container-events {
+    max-width: 1140px;    /* Độ rộng của khu vực nội dung (Tăng/giảm tùy ý) */
+    margin: 0 auto;       /* Luôn căn giữa container này */
+}
+
+/* TIÊU ĐỀ SỰ KIỆN */
+.events-header {
+    color: #003399;       /* Màu xanh dương đậm */
+    font-size: 35px;      /* Cỡ chữ */
+    font-weight: 700;     /* Độ đậm (400-900) */
+    text-align: center;   /* ĐANG NẰM GIỮA */
+    margin-bottom: 40px;  /* Khoảng cách từ tiêu đề xuống dòng thông báo */
+    text-transform: uppercase;
+}
+
+/* NỘI DUNG THÔNG BÁO */
+.events-content-box {
+    width: 100%;          /* Chiếm hết chiều ngang container */
+    text-align: left;     /* CĂN TRÁI dòng chữ bên trong */
+}
+
+.status-msg {
+    font-size: 16px;      /* Cỡ chữ thông báo */
+    color: #666666;       /* Màu chữ xám */
+    
+    /* CĂN CHỈNH KHOẢNG TRỐNG BÊN PHẢI BẰNG PADDING HOẶC MARGIN */
+    padding-left: 20px;   /* Khoảng cách từ lề trái vào chữ */
+    padding-right: 60%;   /* TĂNG CON SỐ NÀY để tạo khoảng trống lớn bên phải */
+    
+    line-height: 1.6;     /* Độ giãn dòng */
+}
+
+.stats-section {
+    padding: 60px 0;        /* Khoảng cách trên/dưới của cả vùng */
+    background: #ffffff;
+}
+
+.container-stats {
+    max-width: 1200px;      /* Độ rộng tổng thể - có thể chỉnh thành 1000px hoặc 1400px */
+    margin: 0 auto;
+}
+
+/* TIÊU ĐỀ: NHỮNG CON SỐ ẤN TƯỢNG */
+.stats-header {
+    color: #003399;         /* Màu xanh dương đồng nhất */
+    font-size: 35px;        /* Cỡ chữ tiêu đề */
+    font-weight: 800;       /* Độ đậm của chữ */
+    text-align: center;     /* Luôn nằm giữa */
+    text-transform: uppercase;
+    margin-bottom: 50px;    /* Khoảng cách từ tiêu đề xuống các con số */
+}
+
+/* BỐ CỤC GRID 5 CỘT */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Chia đều 5 cột bằng nhau */
+    gap: 18px;              /* Khoảng cách giữa các cột */
+    text-align: center;     /* Căn giữa nội dung trong từng cột */
+}
+
+/* SỐ LIỆU CHÍNH (Ví dụ: 24,000+) */
+.stat-number {
+    color: #003399;         /* Màu xanh dương chủ đạo */
+    font-size: 35px;        /* Cỡ chữ số liệu - Bạn có thể tăng lên nếu muốn 'khủng' hơn */
+    font-weight: 800;
+    margin-bottom: 10px;    /* Khoảng cách từ số xuống chữ mô tả */
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.stat-number sup {
+    font-size: 24px;        /* Cỡ chữ của dấu + hoặc % */
+    margin-left: 2px;       /* Khoảng cách ngang giữa số và ký hiệu */
+}
+
+/* CHỮ MÔ TẢ (Ví dụ: Người học) */
+.stat-label {
+    color: #000000;         /* Màu đen như yêu cầu */
+    font-size: 16px;        /* Cỡ chữ nhỏ hơn số liệu */
+    font-weight: 600;
+    line-height: 1.4;       /* Độ giãn dòng cho các cụm chữ dài */
+}
+
+.banner-container {
+        /* Thiết lập kích thước cố định cho khung chứa */
+        width: 1000px;
+        height: 300px;
+        overflow: hidden; /* Cắt phần dư thừa nếu ảnh không khớp tỉ lệ */
+        margin: 20px auto; /* Căn giữa banner trên trang */
+        border-radius: 8px; /* Bo góc nhẹ cho hiện đại */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+    }
+
+    .banner-container img {
+        width: 100%;
+        height: 100%;
+        /* object-fit: cover giúp ảnh phủ kín khung 1000x300 mà không bị méo */
+        object-fit: cover; 
+        /* object-position: center giúp tập trung vào phần giữa của ảnh */
+        object-position: center;
+        display: block;
+    }
+
+.admission-section {
+    padding: 80px 0;
+    background-color: #ffffff;
+    position: relative; /* Để định vị hoa đào */
+    overflow: hidden;
+}
+
+.admission-container {
+    display: flex;
+    align-items: center;
+    gap: 50px; /* Khoảng cách giữa 2 cột */
+}
+
+/* Cột Trái: Media */
+.admission-image {
+    flex: 45;
+    position: relative;
+}
+
+.admission-image .main-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.snowman {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-size: 40px;
+    filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.2));
+}
+
+/* Cột Phải: Nội dung */
+.admission-info {
+    flex: 55;
+}
+
+.section-title-left {
+    color: #003399;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: left; /* Căn trái theo yêu cầu */
+}
+
+.description {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Danh sách bậc học */
+.admission-list {
+    list-style: none;
+    margin-bottom: 35px;
+}
+
+.admission-list li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.arrow-icon {
+    background: #003399;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    font-size: 12px;
+}
+
+.admission-list a {
+    text-decoration: none;
+    color: #003399;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.admission-list a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Nút CTA */
+.cta-btn {
+    background-color: #003399;
+    color: white;
+    padding: 15px 35px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Phóng to nhẹ */
+}
+
+/* Hoa đào & Social Sidebar */
+.cherry-blossom {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 30px;
+    opacity: 0.7;
+}
+
+.social-sidebar {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.social-sidebar a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 2px;
+}
+.fb { background: #3b5998; }
+.yt { background: #ff0000; }
+.ig { background: #e1306c; }
+.tk { background: #000000; }
+
+/* Container tổng quản lý bố cục 3 cột */
+.info-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Style chung cho từng khối (Card) */
+.info-card {
+    flex: 1;
+    max-width: 380px;
+    background: #fff;
+}
+
+/* Tiêu đề mục (Đào tạo, Sinh viên...) */
+.card-title {
+    color: #003399;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Khung chứa ảnh */
+.card-image img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.card-image img:hover {
+    transform: scale(1.02); /* Hiệu ứng phóng nhẹ khi di chuột */
+}
+
+/* Nội dung văn bản bên dưới ảnh */
+.card-content h3 {
+    font-size: 16px;
+    color: #333;
+    margin: 15px 0 10px 0;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Hỗ trợ hiển thị trên Mobile (Chuyển thành 1 cột) */
+@media (max-width: 768px) {
+    .info-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .info-card {
+        width: 100%;
+    }
+}
+
+/* Container chính với ảnh nền */
+.dao-tao-container {
+    width: 100%;
+    height: 450px;
+    background-image: url('https://tlu.edu.vn/wp-content/uploads/2025/08/diem-chuan-dai-hoc-thuy-loi2.webp'); /* Thay ảnh nền tại đây */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+}
+
+/* Lớp phủ màu xanh gradient từ trái sang phải */
+.dao-tao-overlay {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 21, 255, 0.95) 40%, rgba(0, 21, 255, 0.4) 100%);
+    padding: 0 10%;
+    box-sizing: border-box;
+}
+
+/* Cột danh sách bên trái */
+.list-section {
+    flex: 1;
+    max-height: 300px;
+}
+
+.main-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Danh sách có thể cuộn dọc */
+.scrollable-list {
+    max-height: 200px;
+    overflow-y: auto; /* Kích hoạt cuộn dọc */
+    padding-right: 10px;
+}
+
+/* Tùy chỉnh thanh cuộn (Scrollbar) cho đẹp hơn */
+.scrollable-list::-webkit-scrollbar {
+    width: 4px;
+}
+.scrollable-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.list-item {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0;
+    opacity: 0.4;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.list-item:hover, .list-item.active {
+    opacity: 1;
+}
+
+/* Cột chi tiết bên phải */
+.detail-section {
+    flex: 1;
+    padding-left: 50px;
+}
+
+.description {
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    text-align: justify;
+}
+
+/* Nút bấm */
+.btn-discover {
+    display: inline-block;
+    background: #fff;
+    color: #003399;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-discover:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.arrow {
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .dao-tao-overlay {
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+    .detail-section {
+        padding-left: 0;
+        margin-top: 30px;
+    }
+    .scrollable-list {
+        text-align: center;
+    }
+}
+
+.intl-cooperation {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 0;
+    font-family: Arial, sans-serif;
+}
+
+.section-main-title {
+    color: #003399;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.intl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 0.8fr; /* 3 cột card và 1 cột sidebar */
+    gap: 20px;
+}
+
+/* Style cho các Card */
+.intl-card {
+    background: #fff;
+}
+
+.intl-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.category {
+    display: block;
+    color: #003399;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.intl-card h3 {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #333;
+    margin-bottom: 10px;
+    min-height: 60px;
+}
+
+.date {
+    color: #999;
+    font-size: 12px;
+}
+
+/* Style cho Sidebar */
+.intl-sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-item {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.sidebar-item:last-child {
+    border-bottom: none;
+}
+
+.sidebar-item h4 {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .intl-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Container chung */
+.research-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 15px;
+    font-family: 'Arial', sans-serif;
+}
+
+.research-title {
+    color: #003399;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Cấu trúc Grid 4 cột */
+.research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 0.8fr;
+    gap: 20px;
+}
+
+/* Style cho Card chính */
+.res-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.res-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.res-info {
+    padding: 15px;
+}
+
+.res-label {
+    color: #003399;
+    font-size: 11px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.res-card h3 {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.res-date {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Style cho Sidebar */
+.res-sidebar {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.side-item {
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+}
+
+.side-item:last-child {
+    border-bottom: none;
+}
+
+.side-item h4 {
+    font-size: 14px;
+    color: #333;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* Tương thích Mobile */
+@media (max-width: 992px) {
+    .research-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .research-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Nền xanh toàn bộ khu vực */
+.partners-section {
+    background-color: #0015ff;
+    padding: 60px 0;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+.partners-container {
+    max-width: 800px; /* Giới hạn độ rộng khối nội dung cho cân đối */
+    margin: 0 auto;
+}
+
+/* Tiêu đề trắng */
+.partners-title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Đoạn mô tả trắng */
+.partners-desc {
+    color: #ffffff;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    padding: 0 40px;
+}
+
+/* Khung Slider cố định 600x100 */
+.partners-slider {
+    background: #ffffff;
+    width: 600px;
+    height: 100px;
+    margin: 0 auto;
+    overflow: hidden; /* Ẩn phần thừa bên ngoài 8 logo */
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.slider-track {
+    display: flex;
+    /* Animation nhảy 1 logo mỗi giây */
+    animation: slideStep 16s steps(1) infinite; 
+    /* Lưu ý: 16 logo x 1 giây = 16 giây tổng chu kỳ */
+}
+
+.slide {
+    width: 75px; /* ÉP ĐÚNG 75px để hiện đủ 8 cái trong khung 600px */
+    height: 100px;
+    flex-shrink: 0; /* Không cho phép logo bị co lại */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.slide img {
+    max-height: 50px;
+    max-width: 65px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: 0.3s;
+}
+
+/* Hiệu ứng trượt từng bước 75px */
+@keyframes slideStep {
+    0% { transform: translateX(0); }
+    6.25% { transform: translateX(-75px); }
+    12.5% { transform: translateX(-150px); }
+    18.75% { transform: translateX(-225px); }
+    25% { transform: translateX(-300px); }
+    31.25% { transform: translateX(-375px); }
+    37.5% { transform: translateX(-450px); }
+    43.75% { transform: translateX(-525px); }
+    50% { transform: translateX(-600px); }
+    56.25% { transform: translateX(-675px); }
+    62.5% { transform: translateX(-750px); }
+    68.75% { transform: translateX(-825px); }
+    75% { transform: translateX(-900px); }
+    81.25% { transform: translateX(-975px); }
+    87.5% { transform: translateX(-1050px); }
+    93.75% { transform: translateX(-1125px); }
+    100% { transform: translateX(-1200px); }
+}
+
+.community-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 15px;
+    font-family: 'Arial', sans-serif;
+}
+
+.community-main-title {
+    color: #003399;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* Lưới bố cục: 3 cột card + 1 cột danh sách vắn */
+.community-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 0.8fr;
+    gap: 20px;
+}
+
+/* Định dạng thẻ tin chính */
+.community-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.community-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-box img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.news-tag {
+    display: block;
+    color: #003399;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.community-card h3 {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+    min-height: 60px; /* Đảm bảo các tiêu đề đều hàng */
+}
+
+.post-date {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Định dạng cột danh sách bên phải */
+.community-sidebar {
+    background: #fcfcfc;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.side-item {
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+}
+
+.side-item:last-child {
+    border-bottom: none;
+}
+
+.side-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .community-grid-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .community-grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tlu-moments {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 15px;
+    font-family: Arial, sans-serif;
+}
+
+.moments-title {
+    color: #003399;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Lưới ảnh phức hợp */
+.moments-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 150px; /* Chiều cao cơ bản của mỗi ô */
+    gap: 15px;
+}
+
+.moment-item {
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+}
+
+.moment-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.moment-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Tùy chỉnh kích thước các ô đặc biệt để giống ảnh mẫu */
+.item-large {
+    grid-column: span 1;
+    grid-row: span 2; /* Cao gấp đôi */
+}
+
+.item-wide {
+    grid-column: span 2;
+    grid-row: span 2; /* Ô trung tâm lớn nhất */
+}
+
+/* Các ô khác mặc định là 1x1, nhưng ta có thể cho một số ô dài ra */
+.moment-item:nth-child(2) { grid-column: span 2; }
+.moment-item:nth-child(8) { grid-column: span 2; }
+
+/* Responsive cho máy tính bảng và điện thoại */
+@media (max-width: 992px) {
+    .moments-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .item-wide, .item-large {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+}
+
+.tlu-footer {
+    background-color: #0015ff;
+    color: #ffffff;
+    padding: 40px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Bố cục hàng đầu tiên chứa Logo và 3 thông tin liên hệ */
+.footer-contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.footer-logo-box img {
+    height: 60px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-item i {
+    font-size: 18px;
+}
+
+.contact-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.contact-text strong {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Đường kẻ ngang mảnh */
+.footer-line {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 30px;
+}
+
+/* Bố cục các cột bên dưới */
+.footer-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    gap: 20px;
+}
+
+.f-col h3 {
+    font-size: 15px;
+    margin-bottom: 20px;
+    border-left: 3px solid #ffffff;
+    padding-left: 10px;
+    line-height: 1;
+}
+
+.f-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.f-col ul li a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 2;
+}
+
+/* Phần bản đồ ảnh */
+.map-image-wrapper {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 150px;
+}
+
+.map-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.map-tag {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: white;
+    padding: 3px 8px;
+    border-radius: 2px;
+}
+
+.map-tag a {
+    color: #333;
+    font-size: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Responsive cho di động */
+@media (max-width: 768px) {
+    .footer-contact-header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    .footer-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.social-sidebar {
+    position: fixed;
+    right: 0; /* Nằm sát mép phải trang */
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Đảm bảo chính giữa 100% */
+    z-index: 10000; /* Nằm trên cả hoa đào và header */
+    display: flex;
+    flex-direction: column; /* Xếp dọc các icon */
+    gap: 10px;
+    padding-right: 10px; /* Tạo khoảng cách nhỏ với mép màn hình */
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; /* Bo góc như trong ảnh mẫu */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    text-decoration: none;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Đổ màu cho từng icon khi di chuột vào (Hover) */
+.social-icon.fb { color: #1877F2; }
+.social-icon.yt { color: #FF0000; }
+.social-icon.ins { color: #E4405F; }
+.social-icon.tk { color: #000000; }
+
+.social-icon:hover {
+    transform: scale(1.1); /* Phóng to nhẹ khi di chuột */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+</style>
+</head>
+<body>
+<header class="tlu-header">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <div class="header-top">
+    <div class="container">
+        <div class="logo-area">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2025/08/Logo-Truong-Dai-hoc-Thuy-loi.webp" alt="Đại học Thủy lợi" class="main-logo">
+        </div>
+        
+        <div class="top-right">
+            <div class="search-wrapper">
+                <input type="text" placeholder="Tìm kiếm...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="lang-switch">
+                <img src="https://www.bing.com/th/id/OIP.nhZkQEZ3QsIQ41IYotUPaAHaHa?w=207&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" 
+                     alt="VN" 
+                     class="lang-flag">
+                <span>VN</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <nav class="main-navigation">
+        <div class="container">
+          <ul class="nav-menu">
+    <li class="has-dropdown">
+        <a href="#">GIỚI THIỆU <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Tổng quan</a></li>
+            <li><a href="#">Cơ cấu tổ chức</a></li>
+            <li><a href="#">Lịch sử hình thành</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">TIN TỨC <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Tin tức TLU</a></li>
+            <li><a href="#">Thông báo chung</a></li>
+            <li><a href="#">Tin báo chí</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">TUYỂN SINH <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Đại học chính quy</a></li>
+            <li><a href="#">Thạc sĩ - Tiến sĩ</a></li>
+            <li><a href="#">Vừa làm vừa học</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">ĐÀO TẠO <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Chương trình đào tạo</a></li>
+            <li><a href="#">Lịch học - Lịch thi</a></li>
+            <li><a href="#">Văn bằng - Chứng chỉ</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">NGHIÊN CỨU <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Đề tài nghiên cứu</a></li>
+            <li><a href="#">Tạp chí khoa học</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">HỢP TÁC QUỐC TẾ <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Đối tác nước ngoài</a></li>
+            <li><a href="#">Chương trình liên kết</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">SINH VIÊN <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Hoạt động ngoại khóa</a></li>
+            <li><a href="#">Việc làm - Tuyển dụng</a></li>
+        </ul>
+    </li>
+
+    <li class="has-dropdown">
+        <a href="#">eTLU <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Cổng thông tin sinh viên</a></li>
+            <li><a href="#">Thư viện số</a></li>
+            <li><a href="#">Email sinh viên</a></li>
+        </ul>
+    </li>
+</ul>
+        </div>
+    </nav>
+</header>
+
+<div class="banner-top-wrapper">
+    <img src="https://hungphu.hungyen.gov.vn/updload_ubt/userfiles/images/dh-dang-1762136260414601223567.jpg" 
+         alt="Banner Đại hội Đảng" 
+         class="banner-top-img">
+</div>
+
+<section class="news-section">
+    <div class="container main-grid">
+        
+        <div class="news-col">
+            <h2 class="section-title">TIN TỨC</h2>
+            <div class="news-wrapper">
+                <article class="card-big">
+                    <img src="https://tlu.edu.vn/wp-content/uploads/2026/02/image003-2.webp" alt="Tin tiêu điểm">
+                    <div class="card-body">
+                        <h3>Kết nạp 8 đảng viên mới vào dịp kỷ niệm 96 năm Ngày thành lập Đảng</h3>
+                        <p class="date">03/02/2026</p>
+                        <p class="sapo">  TLU – Trong không khí thi đua sôi nổi chào mừng kỷ niệm 96 năm Ngày thành lập Đảng…</p>
+                    </div>
+                </article>
+
+                <div class="news-sub">
+                    <div class="card-small">
+    <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/1.webp" alt="Thumb 1">
+    <h4>Phía sau tấm bằng kỹ sư của chàng sinh viên Lào</h4>
+    <p class="date">03/02/2026</p>
+</div>
+                   <div class="card-small" style="width: 300px; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-family: sans-serif;">
+    <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/nycu_02.webp" 
+         alt="Thumb 2" 
+         style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 10px; object-fit: cover;">
+    
+    <h4 style="font-size: 16px; margin: 5px 0; color: #003399; line-height: 1.4;">
+        Thúc đẩy hợp tác sâu rộng với Đại học Quốc gia Dương Minh Giao Thông
+    </h4>
+    
+    <p class="date" style="color: #888; font-size: 12px; margin: 0;">30/01/2026</p>
+</div>
+                </div>
+            </div>
+            <div class="dots"><span></span><span class="active"></span></div>
+        </div>
+
+        <aside class="notice-col">
+            <h2 class="section-title">THÔNG BÁO</h2>
+            <div class="notice-list">
+    <div class="notice-item">
+        <a href="#">Triển khai đánh giá kết quả rèn luyện đối với sinh viên chính quy học kỳ 1 năm học 2025-2026</a>
+        <p class="date">05/02/2026</p>
+    </div>
+
+    <div class="notice-item">
+        <a href="#">Thông báo về việc đăng ký học lớp kỹ năng mềm và ngoại ngữ tăng cường đợt 1</a>
+        <p class="date">03/02/2026</p>
+    </div>
+
+    <div class="notice-item">
+        <a href="#">Kế hoạch tổ chức lễ tốt nghiệp và trao bằng kỹ sư, cử nhân đợt tháng 3 năm 2026</a>
+        <p class="date">30/01/2026</p>
+    </div>
+
+    <div class="notice-item">
+        <a href="#">Thông báo lịch thi kết thúc học phần và kiểm tra điều kiện học kỳ phụ</a>
+        <p class="date">28/01/2026</p>
+    </div>
+
+    <div class="notice-item">
+        <a href="#">Thông báo tuyển sinh chương trình liên kết quốc tế năm 2026 - Cơ hội học tập tại nước ngoài</a>
+        <p class="date">25/01/2026</p>
+    </div>
+</div>
+        </aside>
+        
+    </div>
+</section>
+
+<section class="events-section">
+    <div class="container-events">
+        <h2 class="events-header">SỰ KIỆN</h2>
+        <div class="events-content-box">
+            <p class="status-msg">Chưa có sự kiện nào chuẩn bị diễn ra.</p>
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="container-stats">
+        <h2 class="stats-header">NHỮNG CON SỐ ẤN TƯỢNG</h2>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">24,000<sup>+</sup></div>
+                <div class="stat-label">Người học</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">500<sup>+</sup></div>
+                <div class="stat-label">Đối tác trong & ngoài nước</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">95<sup>%</sup></div>
+                <div class="stat-label">Sinh viên tốt nghiệp có việc làm</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">75<sup>+</sup></div>
+                <div class="stat-label">Ngành học</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">60<sup>%</sup></div>
+                <div class="stat-label">Giảng Viên Tiến sĩ</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="banner-container">
+    <img src="https://tlu.edu.vn/wp-content/uploads/2025/12/GS-Nguyen-Trung-Viet.webp" alt="Banner GS Nguyễn Trung Việt">
+</div>
+
+<section class="admission-section">
+    <div class="container admission-container">
+       <div class="admission-image">
+    <img src="https://tlu.edu.vn/wp-content/uploads/2025/08/diem-chuan-dai-hoc-thuy-loi2.webp" alt="Điểm chuẩn Đại học Thủy lợi" class="main-img">
+    
+    
+    
+    <div class="image-overlay">
+       
+    </div>
+</div>
+
+        <div class="admission-info">
+            <h2 class="section-title-left">TUYỂN SINH</h2>
+            <p class="description">
+                Trường Đại học Thủy lợi cung cấp đầy đủ các thông tin tuyển sinh, quy trình xét tuyển và cơ hội học bổng hấp dẫn dành cho các bạn trẻ tài năng.
+            </p>
+            
+            <ul class="admission-list">
+                <li><span class="arrow-icon">➔</span> <a href="#">ĐẠI HỌC</a></li>
+                <li><span class="arrow-icon">➔</span> <a href="#">THẠC SĨ</a></li>
+                <li><span class="arrow-icon">➔</span> <a href="#">TIẾN SĨ</a></li>
+            </ul>
+
+            <button class="cta-btn">ĐĂNG KÝ NGAY</button>
+        </div>
+    </div>
+
+    <div class="cherry-blossom">🌸</div>
+</section>
+
+<div class="social-sidebar">
+    <a href="#" class="fb"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="yt"><i class="fab fa-youtube"></i></a>
+    <a href="#" class="ig"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="tk"><i class="fab fa-tiktok"></i></a>
+</div>
+
+<section class="info-container">
+    <div class="info-card">
+        <h2 class="card-title">ĐÀO TẠO</h2>
+        <div class="card-image">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2025/07/toan-truong-3602.webp" alt="Đào tạo">
+        </div>
+        <div class="card-content">
+            <h3>Toàn văn luận án tiến sĩ cấp Trường sau bảo vệ của NCS Hồ Sỹ Mão</h3>
+            <p>Họ tên Nghiên cứu sinh: Hồ Sỹ Mão Đề tài: Nghiên cứu mô hình vận...</p>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <h2 class="card-title">SINH VIÊN</h2>
+        <div class="card-image">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/nycu_02.webp" alt="Sinh viên">
+        </div>
+        <div class="card-content">
+            <h3>Phía sau tấm bằng kỹ sư của chàng “kinh ngư” đến từ đất Lào</h3>
+            <p>Có những cuộc gặp gỡ trong đời không đơn thuần là sự tình cờ,...</p>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <h2 class="card-title">CỰU SINH VIÊN</h2>
+        <div class="card-image">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/615488755_873443032085269_3039031424461974364_n.webp" alt="Cựu sinh viên">
+        </div>
+        <div class="card-content">
+            <h3>Cựu sinh viên Đại học Thủy lợi được bổ nhiệm lãnh đạo Viện Nghiên cứu...</h3>
+            <p>(TLU) – PGS.TS Lê Bảo Trung, cựu sinh viên ưu tú của Trường Đại...</p>
+        </div>
+    </div>
+</section>
+
+<section class="dao-tao-container">
+    <div class="dao-tao-overlay">
+        <div class="list-section">
+            <h2 class="main-title">CÁC ĐƠN VỊ ĐÀO TẠO</h2>
+            <div class="scrollable-list">
+                <div class="list-item active">TRUNG TÂM ĐÀO TẠO QUỐC TẾ</div>
+                <div class="list-item">KHOA KINH TẾ VÀ QUẢN LÝ</div>
+                <div class="list-item">KHOA HÓA VÀ MÔI TRƯỜNG</div>
+                <div class="list-item">KHOA CÔNG NGHỆ THÔNG TIN</div>
+                <div class="list-item">KHOA CƠ KHÍ</div>
+                <div class="list-item">KHOA ĐIỆN - ĐIỆN TỬ</div>
+                <div class="list-item">KHOA CÔNG TRÌNH</div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <p class="description">
+                Quản lý đào tạo đại học chính quy các ngành Ngôn ngữ Anh, Ngôn ngữ Trung Quốc và các Chương trình tiên tiến (ngành Kỹ thuật xây dựng hợp tác với Đại học Arkansas, ngành Kỹ thuật tài nguyên nước hợp tác với Đại học Bang Colorado). Đào tạo ngoại...
+            </p>
+            <a href="#" class="btn-discover">
+                Khám phá Trung tâm Đào tạo Quốc tế <span class="arrow">›</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="intl-cooperation">
+    <h2 class="section-main-title">HỢP TÁC QUỐC TẾ</h2>
+    
+    <div class="intl-grid">
+        <div class="intl-card">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/nycu_02.webp" alt="News 1">
+            <span class="category">HỢP TÁC QUỐC TẾ</span>
+            <h3>Thúc đẩy hợp tác sâu rộng với Đại học Quốc gia Dương Minh Giao Thông – Đài Loan</h3>
+            <span class="date">30/01/2026</span>
+        </div>
+
+        <div class="intl-card">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/181723181628img_8348-1816.webp" alt="News 2">
+            <span class="category">HOẠT ĐỘNG CHUNG</span>
+            <h3>Khởi động dự án cảnh báo sạt lở, lũ bùn đá cho TP Huế</h3>
+            <span class="date">29/01/2026</span>
+        </div>
+
+        <div class="intl-card">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/615488755_873443032085269_3039031424461974364_n.webp" alt="News 3">
+            <span class="category">CỰU SINH VIÊN</span>
+            <h3>Cựu sinh viên Đại học Thủy lợi được bổ nhiệm lãnh đạo Viện Nghiên cứu...</h3>
+            <span class="date">18/01/2026</span>
+        </div>
+
+        <div class="intl-sidebar">
+            <div class="sidebar-item">
+                <span class="category">HỌC BỔNG QUỐC TẾ</span>
+                <h4>Học bổng Chính phủ Nhật Bản (MEXT) theo khuôn khổ...</h4>
+                <span class="date">07/01/2026</span>
+            </div>
+            <div class="sidebar-item">
+                <span class="category">HỢP TÁC QUỐC TẾ</span>
+                <h4>Thông báo về khóa học quốc tế ngắn hạn về...</h4>
+                <span class="date">07/01/2026</span>
+            </div>
+            <div class="sidebar-item">
+                <span class="category">HỢP TÁC QUỐC TẾ</span>
+                <h4>Giảng viên Trường Đại học Thủy lợi đạt thành tích...</h4>
+                <span class="date">22/12/2025</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="research-section">
+    <h2 class="research-title">NGHIÊN CỨU</h2>
+    
+    <div class="research-grid">
+        <div class="res-card">
+            <div class="res-image">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/lancang.webp" alt="Lancang-Mekong">
+            </div>
+            <div class="res-info">
+                <span class="res-label">NGHIÊN CỨU</span>
+                <h3>Trường Đại học Thủy lợi tham gia cuộc thi Đổi mới sáng tạo khoa học và công nghệ các nước Lancang – Mekong</h3>
+                <p class="res-date">30/01/2026</p>
+            </div>
+        </div>
+
+        <div class="res-card">
+            <div class="res-image">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/DTR3-2.webp" alt="Xói lở đất">
+            </div>
+            <div class="res-info">
+                <span class="res-label">NGHIÊN CỨU</span>
+                <h3>Nghiên cứu đặc tính tan rã và cơ chế xói lở của đất đắp mái đập hạ lưu vùng Nam Trung Bộ và đề xuất giải pháp...</h3>
+                <p class="res-date">16/01/2026</p>
+            </div>
+        </div>
+
+        <div class="res-card">
+            <div class="res-image">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2026/01/khcn.webp" alt="Nghiệm thu đề tài">
+            </div>
+            <div class="res-info">
+                <span class="res-label">NGHIÊN CỨU</span>
+                <h3>Nghiệm thu đề tài KH&CN cấp quốc gia: "Nghiên cứu xây dựng, đánh giá tác động của các kịch bản mưa, lũ cực hạn..."</h3>
+                <p class="res-date">14/01/2026</p>
+            </div>
+        </div>
+
+        <div class="res-sidebar">
+            <div class="side-item">
+                <span class="res-label">NGHIÊN CỨU</span>
+                <h4>Khoa học cơ bản – nền tảng tri thức cho...</h4>
+                <p class="res-date">25/12/2025</p>
+            </div>
+            <div class="side-item">
+                <span class="res-label">NGHIÊN CỨU</span>
+                <h4>Nghiệm thu đề tài KH&CN cấp quốc gia: "Nghiên cứu...</h4>
+                <p class="res-date">22/12/2025</p>
+            </div>
+            <div class="side-item">
+                <span class="res-label">NGHIÊN CỨU</span>
+                <h4>Nghiên cứu xây dựng Hướng dẫn thiết kế kết cấu...</h4>
+                <p class="res-date">22/12/2025</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="partners-section">
+    <div class="partners-container">
+        <h2 class="partners-title">MẠNG LƯỚI ĐỐI TÁC</h2>
+        <p class="partners-desc">
+            Trường Đại học Thuỷ lợi tự hào là đối tác của các đại học, viện nghiên cứu, doanh nghiệp, tập đoàn hàng đầu thế giới. Những mối quan hệ đối tác đa dạng nhiều lĩnh vực mở ra nhiều cơ hội cho người học làm giàu thêm kiến thức và trải nghiệm toàn cầu của chính mình.
+        </p>
+        
+        <div class="partners-slider">
+            <div class="slider-track">
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Busitema-University.webp" alt="1"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Vien-Cong-nghe-A-Chau-AIT.webp" alt="2"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/California-State-University-Channel-Islands.webp" alt="3"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Cao-dang-cong-nghe-thong-tin-Kyungnam.webp" alt="4"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Charisma-University.webp" alt="5"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Chonnam-National-University.webp" alt="6"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Business-and-Hotel-Management-School-%E2%80%93-BHMS.webp" alt="7"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Wuhan-University.webp" alt="8"></div>
+                
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Universitas-Trunojovo-Madura.webp" alt="1"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/UC-Davis.webp" alt="2"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Twente-University.webp" alt="3"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/TU-Bergakademie-Freiberg.webp" alt="4"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Truong-DH-Bach-khoa-Han-Quoc.webp" alt="5"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Tokyo-city-University.webp" alt="6"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/Thuy-loi-Thuy-dien-Hoa-Bac.webp" alt="7"></div>
+                <div class="slide"><img src="https://tlu.edu.vn/wp-content/uploads/2025/07/National-United-University.webp" alt="8"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="community-section">
+    <h2 class="community-main-title">VÌ CỘNG ĐỒNG</h2>
+    
+    <div class="community-grid-container">
+        <div class="community-card">
+            <div class="card-img-box">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2025/10/3754605351766423011-scaled.webp" alt="Hoạt động cộng đồng 1">
+            </div>
+            <div class="card-body">
+                <span class="news-tag">TIN TỨC CHUNG</span>
+                <h3>Trường Đại học Thủy lợi đồng hành cùng Hà Tĩnh khắc phục hậu quả thiên tai</h3>
+                <span class="post-date">23/10/2025</span>
+            </div>
+        </div>
+
+        <div class="community-card">
+            <div class="card-img-box">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2025/10/z7146470598902_531c0265266f764cf50330c2fcb2f3aa.webp" alt="Hoạt động cộng đồng 2">
+            </div>
+            <div class="card-body">
+                <span class="news-tag">TIN TỨC CHUNG</span>
+                <h3>Trường Đại học Thủy lợi trao đổi hợp tác nghiên cứu, chuyển giao công nghệ với Sở KH&CN Nghệ An</h3>
+                <span class="post-date">23/10/2025</span>
+            </div>
+        </div>
+
+        <div class="community-card">
+            <div class="card-img-box">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2025/10/567429817_1227578912740550_2934278165976606086_n.webp" alt="Hoạt động cộng đồng 3">
+            </div>
+            <div class="card-body">
+                <span class="news-tag">TIN TỨC CHUNG</span>
+                <h3>Lãnh đạo Trường Đại học Thủy lợi thăm và làm việc tại Sở Nông nghiệp & Phát triển nông thôn tỉnh Nghệ An</h3>
+                <span class="post-date">23/10/2025</span>
+            </div>
+        </div>
+
+        <div class="community-sidebar">
+            <div class="side-item">
+                <span class="news-tag">TIN TỨC CHUNG</span>
+                <h4>Lãnh đạo Trường Đại học Thủy lợi thăm hỏi, động viên tân sinh viên nhập học</h4>
+                <span class="post-date">23/10/2025</span>
+            </div>
+            <div class="side-item">
+                <span class="news-tag">TIN TỨC CHUNG</span>
+                <h4>Nghĩa tình Thủy lợi hướng về Lào Cai vùng lũ quét</h4>
+                <span class="post-date">22/10/2025</span>
+            </div>
+            <div class="side-item">
+                <span class="news-tag">TIN TỨC CHUNG</span>
+                <h4>Chung tay cùng các gia đình cựu sinh viên Thủy lợi gặp khó khăn</h4>
+                <span class="post-date">22/10/2025</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="tlu-moments">
+    <h2 class="moments-title">KHOẢNH KHẮC TLU</h2>
+    
+    <div class="moments-grid">
+        <div class="moment-item item-large">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2025/12/0K4A1170-scaled.webp" alt="Khoảnh khắc 1">
+        </div>
+        
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/2B8A4828-scaled.webp" alt="Khoảnh khắc 2"></div>
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/image009-3.webp" alt="Khoảnh khắc 3"></div>
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/z7327534257131_9c137d6908cfddb6814e8a33ac2e2a7a.webp" alt="Khoảnh khắc 4"></div>
+        
+        <div class="moment-item item-wide">
+            <img src="https://tlu.edu.vn/wp-content/uploads/2025/12/2K6A2534-scaled.webp" alt="Khoảnh khắc 5">
+        </div>
+        
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/brics2025_2.webp" alt="Khoảnh khắc 6"></div>
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/2K6A1567-scaled.webp" alt="Khoảnh khắc 7"></div>
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/TJM_4286-scaled.webp" alt="Khoảnh khắc 8"></div>
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/TJM_5848-scaled.webp" alt="Khoảnh khắc 9"></div>
+        <div class="moment-item"><img src="https://tlu.edu.vn/wp-content/uploads/2025/12/TJM_3620-scaled.webp" alt="Khoảnh khắc 10"></div>
+    </div>
+</section>
+
+<footer class="tlu-footer">
+    <div class="footer-container">
+        <div class="footer-contact-header">
+            <div class="footer-logo-box">
+                <img src="https://tlu.edu.vn/wp-content/uploads/2025/08/Logo-Truong-Dai-hoc-Thuy-loi-am-ban.webp" alt="TLU Logo">
+            </div>
+            
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="contact-text">
+                    <strong>Địa chỉ:</strong>
+                    <span>175 Tây Sơn - P. Trung Liệt - Đống Đa - Hà Nội</span>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-text">
+                    <strong>Email:</strong>
+                    <span>daihocthuyloi@tlu.edu.vn</span>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <div class="contact-text">
+                    <strong>Điện thoại:</strong>
+                    <span>(024) 38522201</span>
+                </div>
+            </div>
+        </div>
+
+        <hr class="footer-line">
+
+        <div class="footer-columns">
+            <div class="f-col">
+                <h3>GIỚI THIỆU</h3>
+                <ul>
+                    <li><a href="#">Tổng quan</a></li>
+                    <li><a href="#">Sứ mạng</a></li>
+                    <li><a href="#">Tin tức & Sự kiện</a></li>
+                    <li><a href="#">Cơ cấu tổ chức</a></li>
+                </ul>
+            </div>
+            <div class="f-col">
+                <h3>TRUY CẬP NHANH</h3>
+                <ul>
+                    <li><a href="#">Các đơn vị đào tạo</a></li>
+                    <li><a href="#">Đào tạo</a></li>
+                    <li><a href="#">Tuyển sinh</a></li>
+                    <li><a href="#">Nghiên cứu</a></li>
+                    <li><a href="#">Hợp tác quốc tế</a></li>
+                </ul>
+            </div>
+            <div class="f-col">
+                <h3>THEO DÕI TLU</h3>
+                <ul class="social-list">
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> Youtube</a></li>
+                    <li><a href="#"><i class="fab fa-tiktok"></i> Tiktok</a></li>
+                </ul>
+            </div>
+            <div class="f-col map-fixed">
+                <h3>TRƯỜNG ĐẠI HỌC THỦY LỢI</h3>
+                <div class="map-image-wrapper">
+                    <img src="https://toquoc.mediacdn.vn/280518851207290880/2022/10/31/tfisg1c-166720423465128148766.png" alt="Bản đồ TLU">
+                    <div class="map-tag">
+                        <a href="https://www.google.com/maps?ll=21.007159,105.824805&z=15&t=h&hl=vi&gl=US&mapclient=embed&cid=15584496421659115758">Xem bản đồ lớn hơn</a>
+                    </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div id="dao-roi-fix"></div>
+
+<style>
+    #dao-roi-fix {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 99999; /* Đảm bảo cực cao để nổi trên mọi thứ */
+        overflow: hidden;
+    }
+
+    .canh-dao-fix {
+        position: absolute;
+        background: #ffb6c1;
+        border-radius: 50% 0 50% 50%; /* Hình cánh hoa */
+        opacity: 0.8;
+        animation: key-hoa-roi linear forwards;
+    }
+
+    @keyframes key-hoa-roi {
+        0% {
+            transform: translateY(-10vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% { opacity: 1; }
+        100% {
+            transform: translateY(105vh) rotate(720deg) translateX(50px);
+            opacity: 0.3;
+        }
+    }
+</style>
+
+<script>
+    function startHoaDao() {
+        const container = document.getElementById('dao-roi-fix');
+        if (!container) return;
+
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'canh-dao-fix';
+            
+            // Kích thước ngẫu nhiên
+            const size = Math.random() * 10 + 8 + 'px';
+            petal.style.width = size;
+            petal.style.height = size;
+            
+            // Vị trí ngang ngẫu nhiên
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // Tốc độ rơi ngẫu nhiên (4s đến 8s)
+            const duration = Math.random() * 4 + 4 + 's';
+            petal.style.animationDuration = duration;
+
+            container.appendChild(petal);
+
+            // Xóa để tránh lag máy sau khi rơi xong
+            setTimeout(() => {
+                petal.remove();
+            }, 8000);
+        }
+
+        // Tạo cánh hoa mới mỗi 400ms
+        setInterval(createPetal, 400);
+    }
+
+    // Đảm bảo trang web tải xong toàn bộ mới bắt đầu cho hoa rơi
+    if (document.readyState === 'complete') {
+        startHoaDao();
+    } else {
+        window.addEventListener('load', startHoaDao);
+    }
+</script>
+
+<div class="social-sidebar">
+    <a href="#" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-icon yt"><i class="fab fa-youtube"></i></a>
+    <a href="#" class="social-icon ins"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-icon tk"><i class="fab fa-tiktok"></i></a>
+</div>
+
+<script>const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+function nextSlide() {
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+}
+
+// Chạy tự động
+setInterval(nextSlide, 4000);
+
+// Gán sự kiện cho nút bấm
+document.querySelector('.next-btn').addEventListener('click', nextSlide);
+document.querySelector('.prev-btn').addEventListener('click', () => {
+    slides[current].classList.remove('active');
+    current = (current - 1 + slides.length) % slides.length;
+    slides[current].classList.add('active');
+});
+
+
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
